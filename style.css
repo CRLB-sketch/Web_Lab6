@@ -17,7 +17,7 @@ h2 {
 
 .the-grid {
     display: grid;
-    grid-template-columns: 200px 200px 200px 200px 200px;
+    grid-template-columns: 200px 200px 200px 200px 200px 200px 200px 200px; 
     grid-gap: 5px;
     background-color: black;
     justify-content: center;
