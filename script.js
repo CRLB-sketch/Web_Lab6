@@ -1,3 +1,15 @@
+/*****************************************************************************************
+* Universidad del Valle de Guatemala
+* Sistemas y Tecnologías Web - Sección 10
+*
+* Laboratorio 6 - React
+* 
+* ! script : Donde se llevará a cabo todo el código de React para el juego de memoria
+*
+* @author   Cristian Fernando Laynez Bachez - 201281
+* @date     16-Marzo-2022
+****************************************************************************************/
+
 const Title = () => {
   return (
       <h1 className="title">Memory Game Of Love (Otaku Version)</h1>
@@ -7,8 +19,6 @@ const Title = () => {
 const Card = ({ card, manager, setManager, flipped }) => {
     
   const change = () => {
-    // console.log(manager.selected1.ship + " and " + manager.selected2.ship)   
-    // console.log(manager.selected1 + " and " + manager.selected2)   
     if(manager.selected1 === null){
       console.log("Primera carta registrada: " + card.theImg)
       setManager({ contador: manager.contador+1, selected1: card, selected2: manager.selected2, temps: manager.temps+1})
@@ -57,19 +67,26 @@ function Cards({manager, setManager}){
 
   const [cards, setCards] = React.useState(defaultCards)
 
-  if(manager.temps == -1 ){
-    console.log("Revisar:" + manager.selected1 + " & " + manager.selected2)
-    if(manager.selected1 === manager.selected2){
-      console.log("SI SON UWU")
+  React.useEffect(() => {
+    if(manager.selected1 && manager.selected2){
+      if(manager.selected1.ship === manager.selected2.ship){
+        // console.log("SI SON UWU")
+        setCards(beforeCards => {
+          return beforeCards.map(card => {
+            return (card.ship === manager.selected1.ship) ? {... card, done: true} : card
+          })
+        })
+          setManager({ contador: manager.contador, selected1: null, selected2: null, temps: -1})
+      }
+      else{
+        // console.log("NO SON >:v")
+        setTimeout(() => {
+          setManager({ contador: manager.contador, selected1: null, selected2: null, temps: -1})
+        }, 1000)        
+      }
     }
-    else{
-      console.log("NO SON >:v")
-      setTimeout(() => {
-        setManager({ contador: manager.contador+1, selected1: null, selected2: null, temps: -1})
-      }, 1000)
-      
-    }
-  }
+    
+  }, [manager.selected1, manager.selected2])
   
   return (
     <div className="the-grid">
@@ -85,12 +102,11 @@ function Cards({manager, setManager}){
   )
 }
 
-
 function Contador({manager}){  
   return (
     <div>
       <h2>Movimientos tomados: {manager.contador}</h2>
-      <h2>Temps: {manager.temps}</h2>
+      {/* <h2>Temps: {manager.temps}</h2> */}
     </div>
   )
 }
