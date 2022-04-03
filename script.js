@@ -12,26 +12,28 @@
 
 const Title = () => {
   return (
-      <h1 className="title">Memory Game Of Love (Otaku Version)</h1>
+      <h1 className="title">Memory Game Of Finding Love (Otaku Version)</h1>
+  )
+}
+
+const Controller = ({manager}) => {  
+  return (
+    <div>
+      <h2>Movements taked: {manager.counter}</h2>      
+    </div>
   )
 }
 
 const Card = ({ card, manager, setManager, flipped }) => {
     
   const change = () => {
-    if(manager.selected1 === null){
-      console.log("Primera carta registrada: " + card.theImg)
-      setManager({ contador: manager.contador+1, selected1: card, selected2: manager.selected2, temps: manager.temps+1})
-    }
-    else {
-      console.log("Segunda carta registrada: " + card.theImg)
-      setManager({ contador: manager.contador+1, selected1: manager.selected1, selected2: card, temps: -1})
-    }
+    (manager.selected1 === null) ? setManager({ counter: manager.counter+1, selected1: card, selected2: manager.selected2}) 
+      : setManager({ counter: manager.counter+1, selected1: manager.selected1, selected2: card})
   }
 
   return (
     <div className="card">
-      <div className={flipped ? "flipped" : ""}>
+      <div className={flipped ? "flipped" : "backed"}>
         <img className="front" src={card.theImg} alt="card front" />
         <img 
           className="back" 
@@ -63,69 +65,76 @@ const defaultCards = [
   { ship: 8, theImg: "img/ship8_w.png", done: false },
 ]
 
-function Cards({manager, setManager}){
+const Cards = ({manager, setManager}) => {
+  
+  const insertCardsRandom = (theCards) => {
+    const cardsRandom = [...theCards]
+    for (var i = cardsRandom.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var temp = cardsRandom[i];
+        cardsRandom[i] = cardsRandom[j];
+        cardsRandom[j] = temp;
+    }        
+    return cardsRandom
+  }
 
-  const [cards, setCards] = React.useState(defaultCards)
-
+  const [cards, setCards] = React.useState(insertCardsRandom(defaultCards))
+  const [total, setTotal] = React.useState(0)  
+    
+  // Para esta seccion se llevará a cabo la verificación de cartas
   React.useEffect(() => {
     if(manager.selected1 && manager.selected2){
       if(manager.selected1.ship === manager.selected2.ship){
-        // console.log("SI SON UWU")
         setCards(beforeCards => {
-          return beforeCards.map(card => {
+          return beforeCards.map(card => {            
             return (card.ship === manager.selected1.ship) ? {... card, done: true} : card
           })
         })
-          setManager({ contador: manager.contador, selected1: null, selected2: null, temps: -1})
+        setManager({ counter: manager.counter, selected1: null, selected2: null,})
+        setTotal(total + 2)
       }
       else{
-        // console.log("NO SON >:v")
         setTimeout(() => {
-          setManager({ contador: manager.contador, selected1: null, selected2: null, temps: -1})
+          setManager({ counter: manager.counter, selected1: null, selected2: null,})
         }, 1000)        
       }
     }
     
   }, [manager.selected1, manager.selected2])
-  
-  return (
-    <div className="the-grid">
-      {cards.map((card) => 
-      <Card 
-        card={card}
-        manager={manager}
-        setManager={setManager}
-        flipped={card === manager.selected1 || card === manager.selected2 || card.done}
-      />
-    )}
-    </div>
-  )
-}
-
-function Contador({manager}){  
+      
   return (
     <div>
-      <h2>Movimientos tomados: {manager.contador}</h2>
-      {/* <h2>Temps: {manager.temps}</h2> */}
+      <div>        
+        { (total === cards.length) && <h2>GANASTE :D</h2> }
+      </div>
+      <div className="the-grid">
+        {cards.map((card) =>       
+          <Card 
+            card={card}
+            manager={manager}
+            setManager={setManager}
+            flipped={card === manager.selected1 || card === manager.selected2 || card.done}
+          />      
+      )}
+      </div>
     </div>
   )
 }
 
-function App(){  
+const App = () => {  
   
   const[manager, setManager] = React.useState({
-    contador: 0,
+    counter: 0,
     selected1 : null,
     selected2 : null,
-    temps: -1
   })
   
   return (
     <div>
       {/* Titulo del juego de memoria */}
       <Title/>
-      {/* Contador en general */} 
-      <Contador
+      {/* Controller en general */} 
+      <Controller
         manager={manager}
       />
       {/* Mostrar todas las cartas */}
