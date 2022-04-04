@@ -24,6 +24,15 @@ const Controller = ({manager}) => {
   )
 }
 
+const WinnerBox = () => {
+  return (
+    <div>
+        <h2 className="winner-text">GANASTE :D</h2>
+        <div className="winner-box"></div>
+    </div>
+  )
+}
+
 const Card = ({ card, manager, setManager, flipped }) => {
     
   const change = () => {
@@ -104,8 +113,8 @@ const Cards = ({manager, setManager}) => {
       
   return (
     <div>
-      <div>        
-        { (total === cards.length) && <h2>GANASTE :D</h2> }
+      <div>  
+        { (total === cards.length) &&  <WinnerBox/>}
       </div>
       <div className="the-grid">
         {cards.map((card) =>       

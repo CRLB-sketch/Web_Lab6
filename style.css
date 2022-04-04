@@ -1,3 +1,15 @@
+/*****************************************************************************************
+* Universidad del Valle de Guatemala
+* Sistemas y Tecnologías Web - Sección 10
+*
+* Laboratorio 6 - React
+* 
+* ! style : Estilos para el juego de memoria
+*
+* @author   Cristian Fernando Laynez Bachez - 201281
+* @date     16-Marzo-2022
+****************************************************************************************/
+
 /* Para toda la aplicación de react */
 body {
     background: black;
@@ -13,7 +25,23 @@ body {
 h2 {
     color: white;
     font-size: 40px;    
-    text-align: center;
+    text-align: center;	
+}
+
+.winner-box {
+	position: absolute;
+	opacity: 0.5;
+	background-color: green;
+	justify-content: center;
+	min-width: 200px;
+	min-height: 200px;
+	height: 60%;
+	width: 100%;
+	right: 5px;
+}
+
+.winner-text{
+	color: green;
 }
 
 /* Grid y tamaños de las cartas */
@@ -29,11 +57,11 @@ h2 {
     color: white;
     border-radius: 5px;
     padding: 20px;
-	height: 400px;
-	width: 300px;
+	height: 250px;
+	width: 150px;
 }
 
-@media (max-width: 2500px) {
+@media (max-width: 1500px) {
 	.the-grid {
 		margin-top: 40px;
 		display: grid;
@@ -50,41 +78,7 @@ h2 {
 	}
 }
 
-@media (max-width: 1750px) {
-	.the-grid {
-		margin-top: 40px;
-		display: grid;
-		grid-template-columns: 1fr 1fr 1fr 1fr;
-		grid-gap: 5px;
-		justify-content: center;
-	}
-	.card img {
-		color: white;
-		border-radius: 5px;
-		padding: 20px;
-		height: 200px;
-		width: 150px;
-	}
-}
-
 @media (max-width: 1100px) {
-	.the-grid {
-		margin-top: 40px;
-		display: grid;
-		grid-template-columns: 1fr 1fr 1fr 1fr;
-		grid-gap: 5px;
-		justify-content: center;
-	}
-	.card img {
-		color: white;
-		border-radius: 5px;
-		padding: 20px;
-		height: 200px;
-		width: 150px;
-	}
-}
-
-@media (max-width: 750px) {
 	.the-grid {
 		margin-top: 40px;
 		display: grid;
@@ -100,6 +94,8 @@ h2 {
 		width: 100px;
 	}
 }
+
+
 
 /* Estilo para la carta de frente */
 .card .front {
